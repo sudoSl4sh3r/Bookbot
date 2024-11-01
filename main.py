@@ -2,8 +2,7 @@ def main():
     path = "books/frankenstein.txt"
     text = get_book_text(path)
     print(text)
-    countWords(text)
-    countChars(text)
+    printReport(path, text)
 
 def get_book_text(path):
     with open(path) as f:
@@ -14,7 +13,7 @@ def countWords(text):
     counter = 0
     for word in words:
         counter += 1
-    return print(f"The book has {counter} words.")
+    return counter
     
 def countChars(text):
     lowered_string = text.lower()
@@ -24,6 +23,26 @@ def countChars(text):
     for char in lowered_string:
         if char in chars:
             chars[char] += 1
-    return print(f"The book has characters: {chars}.")
+    return chars
+
+def sort_on(dict_item):
+    return dict_item["num"]
+
+def sortCharsDict(dict):
+    list_of_dict = []
+    for key, value in dict.items():
+        if key.isalpha():
+            list_of_dict.append({"char": key, "num": value})
+    list_of_dict.sort(key=sort_on, reverse=True)
+    return list_of_dict
+
+def printReport(path, text):
+    print(f"=== Report of {path} ===")
+    print(f"The book has {countWords(text)} number of words.")
+    chars_dict = countChars(text)
+    sorted_list = sortCharsDict(chars_dict)
+    for item in sorted_list:
+        print(f"The '{item['char']}' character was found {item['num']} times.")
+    print("=== End of report ===")
 
 main()
